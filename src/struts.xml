@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!--指定默认编码集,作用于 HttpServletRequest的setCharacterEncoding方法和freemarker,velocity的输出 -->
+	<constant name="struts.i18n.encoding" value="UTF-8"/>
+	<!--为struts标签设置默认的视图主题 -->
+	<constant name="struts.ui.theme" value="simple"></constant>
+	<!--action由spring框架创建和维护 更换struts内部的action创建工厂 -->
+	<constant name="struts.objectFactroy" value="spring"></constant>
+	<!-- 当struts的配置文件修改后,系统是否自动重新加载该文件,默认值为false(生产环境下使用),开发阶段最好打开. -->
+	<constant name="struts.configuration.xml.reload" value="true"/>
+	<!--设置浏览器是否缓存静态内容,默认值为true(生产环境下使用),开发阶段最好 -->
+	<constant name="struts.serve.static.browerCache" value="false"/>
+	<!--开发模式下使用,这样可以打印出更详细的错误信息 -->
+	<constant name="struts.devMode" value="true"/>
+	<!--上传文件的大小限制.最大为5M(上传的文件的总大小,并不是单个文件的大小) -->
+	<constant name="struts.multipart.maxSize" value="10701096"/>
+
+	 						<!-- 控制台主页 -->
+	<package name="itcast" namespace="/control/center" extends="struts-default">		
+		<action name="main"><result>/WEB-INF/page/center/default.jsp</result></action>
+		<action name="top"><result>/WEB-INF/page/center/top.jsp</result></action>
+		<action name="left"><result>/WEB-INF/page/center/menu.jsp</result></action>
+		<action name="right"><result>/WEB-INF/page/center/right.jsp</result></action>
+		<action name="end"><result>/WEB-INF/page/center/end.jsp</result></action>
+    </package>
+							<!--产品类型管理 -->
+    <package name="producttype" namespace="/control/producttype" extends="struts-default">
+    	<action name="list" class="productTypeAction" method="list">
+    		<result name="success">/WEB-INF/page/product/producttypelist.jsp</result>
+    	</action>
+    
+  		<action name="*UI" class="productTypeAction" method="{1}UI">
+    		<result name="success">/WEB-INF/page/product/{1}_productType.jsp</result>
+    	</action>
+    	
+    	<action name="add" class="productTypeAction" method="add">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/producttype</param>
+    		</result>
+    	</action>
+    	<action name="edit" class="productTypeAction" method="edit">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/producttype</param>
+    		</result>
+    	</action>
+    </package>
+					<!--     产品品牌管理-->
+    <package name="brand" namespace="/control/brand" extends="struts-default">
+    	<action name="list" class="brandAction" method="list">
+    		<result name="success">/WEB-INF/page/product/brandlist.jsp</result>
+    	</action>  
+    	
+  		<action name="*UI" class="brandAction" method="{1}UI">
+    		<result name="success">/WEB-INF/page/product/{1}_brand.jsp</result>
+    	</action>
+    	
+    	<action name="add" class="brandAction" method="add">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/brand</param>
+    		</result>
+    		<result name="input">/WEB-INF/page/product/add_brand.jsp</result>
+    	</action>
+    	
+    	<action name="edit" class="brandAction" method="edit">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/brand</param>
+    		</result>
+    		<result name="input">/WEB-INF/page/product/edit_brand.jsp</result>
+    	</action>
+    </package>   
+							<!--     产品样式管理 -->
+    <package name="productstyle" namespace="/control/productstyle" extends="struts-default">
+        <action name="list" class="productStyleAction" method="list">
+    		<result name="success">/WEB-INF/page/product/productstylelist.jsp</result>
+    	</action>
+    	<action name="*UI" class="productStyleAction" method="{1}UI">
+    		<result name="success">/WEB-INF/page/product/{1}_productstyle.jsp</result>
+    	</action>
+    					<!--管理上架、下架、推荐、不推荐 -->
+    	<action name="manage_*" class="productStyleAction" method="{1}">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/productstyle</param>
+    			<param name="productid">${productid}</param>
+    		</result>
+    	</action>
+    	 <action name="add" class="productStyleAction" method="add">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/productstyle</param>
+    			<param name="productid">${productid}</param>
+    		</result>
+    		<result name="input">/WEB-INF/page/product/add_productstyle.jsp</result>
+    	</action>
+    	<action name="edit" class="productStyleAction" method="edit">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/productstyle</param>
+    			<param name="productid">${productid}</param>
+    		</result>
+    		<result name="input">/WEB-INF/page/product/edit_productstyle.jsp</result>
+    	</action>
+    </package>
+							<!-- 产品管理-->
+    <package name="product" namespace="/control/product" extends="struts-default">
+    	<action name="list" class="productAction" method="list">
+    		<result name="success">/WEB-INF/page/product/productlist.jsp</result>
+    	</action>
+    	
+    	<action name="*UI" class="productAction" method="{1}UI">
+    		<result name="selsectType">/WEB-INF/page/product/productTypeSelect.jsp</result>
+    		<result name="success">/WEB-INF/page/product/{1}_product.jsp</result>
+    	</action>
+						<!--管理上架、下架、推荐、不推荐 -->
+    	<action name="manage_*" class="productAction" method="{1}">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/product</param>
+    			<param name="message">${message}</param>
+    		</result>
+    	</action>
+    	<action name="add" class="productAction" method="add">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/product</param>
+    		</result>
+    	</action>
+    	<action name="edit" class="productAction" method="edit">
+    		<result name="toList" type="redirectAction">
+    			<param name="actionName">list</param>
+    			<param name="namespace">/control/product</param>
+    		</result>
+    	</action>
+    </package>
+</struts>
